@@ -10,6 +10,7 @@ pub struct Event {
 }
 
 static RECORDING: Mutex<Option<(Instant, Vec<Event>)>> = Mutex::new(None);
+static TICKS: std::sync::atomic::AtomicU64 = std::sync::atomic::AtomicU64::new(0);
 
 pub fn record_event(pos: [i32; 3]) -> usize {
     let mut guard = RECORDING.lock().unwrap_or_else(|e| e.into_inner());
@@ -31,6 +32,13 @@ pub fn block_break_message(pos: [i32; 3]) -> String {
 pub fn before_break(pos: [i32; 3]) {
     let count = record_event(pos);
     eprintln!("{} (event #{})", block_break_message(pos), count);
+}
+
+pub fn on_tick() {
+    let n = TICKS.fetch_add(1, std::sync::atomic::Ordering::Relaxed) + 1;
+    if n.is_multiple_of(200) {
+        eprintln!("[smooth_replay] tick {n}");
+    }
 }
 
 #[cfg(test)]
