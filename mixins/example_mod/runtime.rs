@@ -44,7 +44,6 @@ mod tests {
             "[example_mod] Breaking block at -3, 64, 12"
         );
     }
-
     #[test]
     fn recording_counts_events() {
         assert!(record_event([1, 2, 3]) >= 1);
