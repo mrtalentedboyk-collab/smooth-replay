@@ -22,6 +22,6 @@ bindings = [{ name = "pos", ty = "[i32;3]", value = "pos" }]
 [[injection]]
 id = "on-tick"
 kind = "HEAD"
-target = "horizon_client::game::Game<'_>::tick"
+target = "horizon_client::game::tick"
 helper = "tick.rs"
 bindings = []
